@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Subscriptions\RelationManagers;
 
 use App\Enums\ProvisionStatus;
+use App\Support\ByteFormatter;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -38,6 +39,9 @@ class SubscriptionProvisionsRelationManager extends RelationManager
                 TextColumn::make('access_key')
                     ->limit(40)
                     ->copyable(),
+                TextColumn::make('transferred_bytes')
+                    ->label('Transferred')
+                    ->formatStateUsing(fn (?int $state): string => ByteFormatter::humanReadable($state)),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

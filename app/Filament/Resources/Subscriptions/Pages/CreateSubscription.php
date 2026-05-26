@@ -8,6 +8,7 @@ use App\Models\Subscription;
 use App\Services\VpnProvisionService;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 
@@ -19,29 +20,31 @@ class CreateSubscription extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        if ($data['create_customer'] ?? false) {
-            $customer = Customer::query()->create([
-                'name' => $data['customer_name'],
-                'email' => $data['customer_email'] ?: null,
-                'phone' => $data['customer_phone'] ?: null,
-                'platform' => $data['customer_platform'],
-                'profile_url' => $data['customer_profile_url'],
-            ]);
-
-            $data['customer_id'] = $customer->id;
-        }
-
-        unset(
-            $data['create_customer'],
-            $data['customer_name'],
-            $data['customer_email'],
-            $data['customer_phone'],
-            $data['customer_platform'],
-            $data['customer_profile_url'],
-        );
-
         /** @var Subscription $subscription */
-        $subscription = app(VpnProvisionService::class)->createSubscriptionWithProvision($data);
+        $subscription = DB::transaction(function () use ($data): Subscription {
+            if ($data['create_customer'] ?? false) {
+                $customer = Customer::query()->create([
+                    'name' => $data['customer_name'],
+                    'email' => $data['customer_email'] ?: null,
+                    'phone' => $data['customer_phone'] ?: null,
+                    'platform' => $data['customer_platform'],
+                    'profile_url' => $data['customer_profile_url'],
+                ]);
+
+                $data['customer_id'] = $customer->id;
+            }
+
+            unset(
+                $data['create_customer'],
+                $data['customer_name'],
+                $data['customer_email'],
+                $data['customer_phone'],
+                $data['customer_platform'],
+                $data['customer_profile_url'],
+            );
+
+            return app(VpnProvisionService::class)->createSubscriptionWithProvision($data);
+        });
 
         $this->createdSubscription = $subscription;
 

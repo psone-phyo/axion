@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'outline' => [
+        'verify_ssl' => env('OUTLINE_VERIFY_SSL', false),
+        'timeout' => env('OUTLINE_TIMEOUT', 15),
+    ],
+
 ];

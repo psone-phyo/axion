@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SubscriptionProvisions\Tables;
 
 use App\Enums\ProvisionStatus;
+use App\Support\ByteFormatter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -29,6 +30,10 @@ class SubscriptionProvisionsTable
                 TextColumn::make('external_user_id')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('outline_access_key_id')
+                    ->label('Outline Key ID')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('key_name')
                     ->searchable(),
                 TextColumn::make('status')
@@ -39,6 +44,14 @@ class SubscriptionProvisionsTable
                         ProvisionStatus::Revoked, ProvisionStatus::Revoked->value => 'danger',
                         default => 'gray',
                     }),
+                TextColumn::make('data_limit_bytes')
+                    ->label('Data Limit')
+                    ->formatStateUsing(fn (?int $state): string => ByteFormatter::humanReadable($state))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('transferred_bytes')
+                    ->label('Transferred')
+                    ->formatStateUsing(fn (?int $state): string => ByteFormatter::humanReadable($state))
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
