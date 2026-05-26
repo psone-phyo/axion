@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->homeUrl(fn (): string => url('/admin/'))
+            ->favicon(asset('logo/axion_main_logo.jpg'))
             ->login()
             ->databaseNotifications()
             ->viteTheme('resources/css/filament/admin/theme.css')

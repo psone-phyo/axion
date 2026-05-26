@@ -9,6 +9,8 @@
         >
 
         <title>Axion | VPN Subscription Service</title>
+        <link rel="icon" type="image/jpeg" href="{{ asset('logo/axion_main_logo.jpg') }}">
+        <link rel="apple-touch-icon" href="{{ asset('logo/axion_main_logo.jpg') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
