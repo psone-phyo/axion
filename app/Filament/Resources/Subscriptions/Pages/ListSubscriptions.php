@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Subscriptions\Pages;
 
 use App\Enums\SubscriptionStatus;
+use App\Filament\Exports\SubscriptionExporter;
 use App\Filament\Resources\Subscriptions\SubscriptionResource;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +19,21 @@ class ListSubscriptions extends ListRecords
     {
         return [
             CreateAction::make(),
+            ExportAction::make('exportSubscriptions')
+                ->label('Export Excel')
+                ->exporter(SubscriptionExporter::class)
+                ->columnMapping(false)
+                ->modifyQueryUsing(function (Builder $query, array $options): Builder {
+                    return $query
+                        ->when(
+                            filled($options['created_from'] ?? null),
+                            fn (Builder $query): Builder => $query->whereDate('created_at', '>=', $options['created_from'])
+                        )
+                        ->when(
+                            filled($options['created_until'] ?? null),
+                            fn (Builder $query): Builder => $query->whereDate('created_at', '<=', $options['created_until'])
+                        );
+                }),
         ];
     }
 

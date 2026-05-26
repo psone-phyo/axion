@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Subscriptions\RelationManagers;
 
 use App\Enums\ProvisionStatus;
+use App\Filament\Resources\SubscriptionProvisions\SubscriptionProvisionResource;
 use App\Support\ByteFormatter;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -48,8 +49,10 @@ class SubscriptionProvisionsRelationManager extends RelationManager
             ])
             ->headerActions([])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->url(fn ($record): string => SubscriptionProvisionResource::getUrl('view', ['record' => $record])),
+                EditAction::make()
+                    ->url(fn ($record): string => SubscriptionProvisionResource::getUrl('edit', ['record' => $record])),
             ])
             ->defaultSort('created_at', 'desc');
     }

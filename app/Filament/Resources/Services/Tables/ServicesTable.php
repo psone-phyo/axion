@@ -27,7 +27,7 @@ class ServicesTable
                     ->suffix(' days')
                     ->sortable(),
                 TextColumn::make('price')
-                    ->money('USD')
+                    ->money('MMK')
                     ->sortable(),
                 TextColumn::make('region')
                     ->badge()

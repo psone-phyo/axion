@@ -23,6 +23,13 @@ class SubscriptionInfolist
                             ->label('Service'),
                         TextEntry::make('service.platform.name')
                             ->label('Platform'),
+                        TextEntry::make('original_price')
+                            ->money('MMK'),
+                        TextEntry::make('discount')
+                            ->money('MMK'),
+                        TextEntry::make('final_price')
+                            ->label('Final Price')
+                            ->money('MMK'),
                         TextEntry::make('status')
                             ->badge()
                             ->formatStateUsing(fn (SubscriptionStatus|string|null $state): ?string => $state instanceof SubscriptionStatus ? $state->label() : $state),
@@ -33,6 +40,8 @@ class SubscriptionInfolist
                         TextEntry::make('provision_summary')
                             ->label('Provision')
                             ->state(fn ($record): string => $record->provisions->first()?->key_name ?? 'Pending'),
+                        TextEntry::make('remark')
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
             ]);

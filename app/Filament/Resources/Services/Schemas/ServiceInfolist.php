@@ -22,7 +22,7 @@ class ServiceInfolist
                         TextEntry::make('duration_days')
                             ->suffix(' days'),
                         TextEntry::make('price')
-                            ->money('USD'),
+                            ->money('MMK'),
                         TextEntry::make('region')
                             ->formatStateUsing(fn (Region|string|null $state): ?string => $state instanceof Region ? $state->label() : $state),
                         IconEntry::make('is_active')

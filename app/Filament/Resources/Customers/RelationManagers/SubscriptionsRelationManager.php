@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Customers\RelationManagers;
 
 use App\Enums\SubscriptionStatus;
+use App\Filament\Resources\Subscriptions\SubscriptionResource;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -50,8 +51,10 @@ class SubscriptionsRelationManager extends RelationManager
             ])
             ->headerActions([])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->url(fn ($record): string => SubscriptionResource::getUrl('view', ['record' => $record])),
+                EditAction::make()
+                    ->url(fn ($record): string => SubscriptionResource::getUrl('edit', ['record' => $record])),
             ])
             ->defaultSort('created_at', 'desc');
     }

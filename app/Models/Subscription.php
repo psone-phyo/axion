@@ -12,6 +12,10 @@ class Subscription extends Model
     protected $fillable = [
         'customer_id',
         'service_id',
+        'original_price',
+        'discount',
+        'final_price',
+        'remark',
         'status',
         'start_date',
         'end_date',
@@ -21,6 +25,9 @@ class Subscription extends Model
     {
         return [
             'status' => SubscriptionStatus::class,
+            'original_price' => 'decimal:2',
+            'discount' => 'decimal:2',
+            'final_price' => 'decimal:2',
             'start_date' => 'date',
             'end_date' => 'date',
         ];

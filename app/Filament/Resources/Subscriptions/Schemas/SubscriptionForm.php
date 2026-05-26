@@ -7,6 +7,7 @@ use App\Enums\CustomerPlatform;
 use App\Models\Service;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Fieldset;
@@ -83,11 +84,33 @@ class SubscriptionForm
                                     ->preload()
                                     ->live()
                                     ->afterStateUpdated(function (Set $set, Get $get, $state): void {
+                                        self::syncPricing($set, $get, $state);
                                         self::syncEndDate($set, $get, $state);
                                     }),
                                 Select::make('status')
                                     ->options(SubscriptionStatus::options())
                                     ->default(SubscriptionStatus::Active->value)
+                                    ->required(),
+                                TextInput::make('original_price')
+                                    ->label('Service Price')
+                                    ->numeric()
+                                    ->prefix('MMK')
+                                    ->readOnly()
+                                    ->required(),
+                                TextInput::make('discount')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->prefix('MMK')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function (Set $set, Get $get): void {
+                                        self::recalculateFinalPrice($set, $get);
+                                    })
+                                    ->required(),
+                                TextInput::make('final_price')
+                                    ->label('Final Price')
+                                    ->numeric()
+                                    ->prefix('MMK')
+                                    ->readOnly()
                                     ->required(),
                                 DatePicker::make('start_date')
                                     ->required()
@@ -99,9 +122,36 @@ class SubscriptionForm
                                 DatePicker::make('end_date')
                                     ->required()
                                     ->helperText('Auto-calculated from the selected service, but can be adjusted if needed.'),
+                                Textarea::make('remark')
+                                    ->rows(3)
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);
+    }
+
+    protected static function syncPricing(Set $set, Get $get, mixed $serviceId): void
+    {
+        if (! $serviceId) {
+            return;
+        }
+
+        $service = Service::query()->find($serviceId);
+
+        if (! $service) {
+            return;
+        }
+
+        $set('original_price', (float) $service->price);
+        self::recalculateFinalPrice($set, $get);
+    }
+
+    protected static function recalculateFinalPrice(Set $set, Get $get): void
+    {
+        $originalPrice = (float) ($get('original_price') ?: 0);
+        $discount = (float) ($get('discount') ?: 0);
+
+        $set('final_price', max($originalPrice - $discount, 0));
     }
 
     protected static function syncEndDate(Set $set, Get $get, mixed $serviceId): void

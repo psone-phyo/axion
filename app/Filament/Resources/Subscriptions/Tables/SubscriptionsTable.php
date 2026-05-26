@@ -31,6 +31,10 @@ class SubscriptionsTable
                 TextColumn::make('service.platform.name')
                     ->label('Platform')
                     ->sortable(),
+                TextColumn::make('final_price')
+                    ->label('Final Price')
+                    ->money('MMK')
+                    ->sortable(),
                 TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (SubscriptionStatus|string|null $state): ?string => $state instanceof SubscriptionStatus ? $state->label() : $state)
