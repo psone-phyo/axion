@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Subscriptions\Pages;
 use App\Enums\SubscriptionStatus;
 use App\Filament\Exports\SubscriptionExporter;
 use App\Filament\Resources\Subscriptions\SubscriptionResource;
+use App\Models\Subscription;
 use Filament\Actions\CreateAction;
 use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ListRecords;
@@ -41,10 +42,13 @@ class ListSubscriptions extends ListRecords
     {
         return [
             'active' => Tab::make('Active')
+                ->badge((string) Subscription::query()->where('status', SubscriptionStatus::Active->value)->count())
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status', SubscriptionStatus::Active->value)),
             'expired' => Tab::make('Expired')
+                ->badge((string) Subscription::query()->where('status', SubscriptionStatus::Expired->value)->count())
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status', SubscriptionStatus::Expired->value)),
             'cancelled' => Tab::make('Cancelled')
+                ->badge((string) Subscription::query()->where('status', SubscriptionStatus::Cancelled->value)->count())
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status', SubscriptionStatus::Cancelled->value)),
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Customers\Pages;
 
 use App\Enums\CustomerPlatform;
 use App\Filament\Resources\Customers\CustomerResource;
+use App\Models\Customer;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -23,11 +24,13 @@ class ListCustomers extends ListRecords
     public function getTabs(): array
     {
         $tabs = [
-            'all' => Tab::make('All'),
+            'all' => Tab::make('All')
+                ->badge((string) Customer::query()->count()),
         ];
 
         foreach (CustomerPlatform::cases() as $platform) {
             $tabs[$platform->value] = Tab::make($platform->label())
+                ->badge((string) Customer::query()->where('platform', $platform->value)->count())
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('platform', $platform->value));
         }
 
