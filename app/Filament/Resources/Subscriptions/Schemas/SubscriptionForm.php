@@ -6,6 +6,7 @@ use App\Enums\SubscriptionStatus;
 use App\Enums\CustomerPlatform;
 use App\Models\Service;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -87,10 +88,14 @@ class SubscriptionForm
                                         self::syncPricing($set, $get, $state);
                                         self::syncEndDate($set, $get, $state);
                                     }),
+                                Hidden::make('status')
+                                    ->default(SubscriptionStatus::Active->value)
+                                    ->dehydrated(fn (string $operation): bool => $operation === 'create'),
                                 Select::make('status')
                                     ->options(SubscriptionStatus::options())
-                                    ->default(SubscriptionStatus::Active->value)
-                                    ->required(),
+                                    ->required()
+                                    ->disabled(fn ($record): bool => in_array($record?->status, [SubscriptionStatus::Expired, SubscriptionStatus::Cancelled], true))
+                                    ->visible(fn (string $operation): bool => $operation === 'edit'),
                                 TextInput::make('original_price')
                                     ->label('Service Price')
                                     ->numeric()
