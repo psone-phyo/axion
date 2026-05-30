@@ -60,4 +60,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Subscription::class, 'created_by');
     }
+
+    public function subscriptionClears(): HasMany
+    {
+        return $this->hasMany(SubscriptionClear::class);
+    }
 }

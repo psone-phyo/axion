@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Subscriptions\Schemas;
 
 use App\Enums\SubscriptionStatus;
+use App\Filament\Resources\SubscriptionClears\SubscriptionClearResource;
 use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -28,6 +29,12 @@ class SubscriptionInfolist
                         TextEntry::make('creator.name')
                             ->label('Created By')
                             ->placeholder('-'),
+                        TextEntry::make('clear_status')
+                            ->label('Clear')
+                            ->state(fn ($record): string => $record->clear_id ? 'Cleared' : 'Uncleared')
+                            ->badge()
+                            ->color(fn ($record): string => $record->clear_id ? 'success' : 'gray')
+                            ->url(fn ($record): ?string => $record->clear ? SubscriptionClearResource::getUrl('view', ['record' => $record->clear]) : null),
                         TextEntry::make('original_price')
                             ->money('MMK'),
                         TextEntry::make('discount')

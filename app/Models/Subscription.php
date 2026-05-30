@@ -13,6 +13,7 @@ class Subscription extends Model
         'customer_id',
         'service_id',
         'created_by',
+        'clear_id',
         'original_price',
         'discount',
         'final_price',
@@ -47,6 +48,11 @@ class Subscription extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function clear(): BelongsTo
+    {
+        return $this->belongsTo(SubscriptionClear::class, 'clear_id');
     }
 
     public function provisions(): HasMany

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Subscriptions\Tables;
 
 use App\Enums\SubscriptionStatus;
+use App\Filament\Resources\SubscriptionClears\SubscriptionClearResource;
 use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -33,6 +34,12 @@ class SubscriptionsTable
                 TextColumn::make('service.platform.name')
                     ->label('Platform')
                     ->sortable(),
+                TextColumn::make('clear_status')
+                    ->label('Clear')
+                    ->state(fn ($record): string => $record->clear_id ? 'Cleared' : 'Uncleared')
+                    ->badge()
+                    ->color(fn ($record): string => $record->clear_id ? 'success' : 'gray')
+                    ->url(fn ($record): ?string => $record->clear ? SubscriptionClearResource::getUrl('view', ['record' => $record->clear]) : null),
                 TextColumn::make('creator.name')
                     ->label('Created By')
                     ->searchable()
