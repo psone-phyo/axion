@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Subscriptions\Schemas;
 
+use App\Enums\Region;
 use App\Enums\SubscriptionStatus;
 use App\Enums\CustomerPlatform;
+use App\Models\Platform;
 use App\Models\Service;
+use App\Models\Subscription;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -78,12 +81,69 @@ class SubscriptionForm
                                     ])
                                     ->visible(fn (Get $get, string $operation): bool => $operation === 'create' && (bool) $get('create_customer'))
                                     ->columnSpanFull(),
+                                Select::make('platform_id')
+                                    ->label('Platform')
+                                    ->options(fn (): array => Platform::query()->orderBy('name')->pluck('name', 'id')->all())
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->live()
+                                    ->dehydrated(false)
+                                    ->afterStateHydrated(function (Set $set, ?Subscription $record): void {
+                                        $set('platform_id', $record?->service?->platform_id);
+                                    })
+                                    ->afterStateUpdated(function (Set $set, Get $get, $state): void {
+                                        $selectedService = filled($get('service_id'))
+                                            ? Service::query()->find($get('service_id'))
+                                            : null;
+
+                                        if ($selectedService?->platform_id !== (int) $state) {
+                                            $set('service_id', null);
+                                            $set('original_price', null);
+                                            $set('final_price', null);
+                                            $set('end_date', null);
+                                        }
+                                    }),
+                                Select::make('region')
+                                    ->label('Region')
+                                    ->options(Region::options())
+                                    ->required()
+                                    ->live()
+                                    ->dehydrated(false)
+                                    ->afterStateHydrated(function (Set $set, ?Subscription $record): void {
+                                        $set('region', $record?->service?->region?->value);
+                                    })
+                                    ->afterStateUpdated(function (Set $set, Get $get, $state): void {
+                                        $selectedService = filled($get('service_id'))
+                                            ? Service::query()->find($get('service_id'))
+                                            : null;
+
+                                        if ($selectedService?->region?->value !== $state) {
+                                            $set('service_id', null);
+                                            $set('original_price', null);
+                                            $set('final_price', null);
+                                            $set('end_date', null);
+                                        }
+                                    }),
                                 Select::make('service_id')
-                                    ->relationship('service', 'name', modifyQueryUsing: fn ($query) => $query->where('is_active', true))
+                                    ->options(function (Get $get): array {
+                                        if (blank($get('platform_id')) || blank($get('region'))) {
+                                            return [];
+                                        }
+
+                                        return Service::query()
+                                            ->where('is_active', true)
+                                            ->where('platform_id', $get('platform_id'))
+                                            ->where('region', $get('region'))
+                                            ->orderBy('name')
+                                            ->pluck('name', 'id')
+                                            ->all();
+                                    })
                                     ->required()
                                     ->searchable()
                                     ->preload()
                                     ->live()
+                                    ->helperText('Select platform and region first.')
                                     ->afterStateUpdated(function (Set $set, Get $get, $state): void {
                                         self::syncPricing($set, $get, $state);
                                         self::syncEndDate($set, $get, $state);
