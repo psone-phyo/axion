@@ -20,9 +20,9 @@ class SubscriptionClearInfolist
                             ->label('Admin'),
                         TextEntry::make('clear_date')
                             ->dateTime(),
-                        TextEntry::make('subscriptions_count')
-                            ->label('Subscriptions')
-                            ->state(fn ($record): int => $record->subscriptions()->count()),
+                        TextEntry::make('payments_count')
+                            ->label('Payments')
+                            ->state(fn ($record): int => $record->payments()->count()),
                         TextEntry::make('total')
                             ->money('MMK'),
                         TextEntry::make('created_at')

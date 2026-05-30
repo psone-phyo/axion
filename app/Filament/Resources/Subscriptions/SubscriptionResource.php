@@ -6,6 +6,7 @@ use App\Filament\Resources\Subscriptions\Pages\CreateSubscription;
 use App\Filament\Resources\Subscriptions\Pages\EditSubscription;
 use App\Filament\Resources\Subscriptions\Pages\ListSubscriptions;
 use App\Filament\Resources\Subscriptions\RelationManagers\SubscriptionProvisionsRelationManager;
+use App\Filament\Resources\Subscriptions\RelationManagers\SubscriptionPaymentsRelationManager;
 use App\Filament\Resources\Subscriptions\Pages\ViewSubscription;
 use App\Filament\Resources\Subscriptions\Schemas\SubscriptionForm;
 use App\Filament\Resources\Subscriptions\Schemas\SubscriptionInfolist;
@@ -49,6 +50,7 @@ class SubscriptionResource extends Resource
     {
         return [
             SubscriptionProvisionsRelationManager::class,
+            SubscriptionPaymentsRelationManager::class,
         ];
     }
 

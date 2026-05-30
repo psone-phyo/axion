@@ -23,9 +23,9 @@ class SubscriptionClearsTable
                 TextColumn::make('clear_date')
                     ->dateTime()
                     ->sortable(),
-                TextColumn::make('subscriptions_count')
-                    ->label('Subscriptions')
-                    ->counts('subscriptions')
+                TextColumn::make('payments_count')
+                    ->label('Payments')
+                    ->counts('payments')
                     ->sortable(),
                 TextColumn::make('total')
                     ->money('MMK')

@@ -30,8 +30,8 @@ class CreateSubscriptionClear extends CreateRecord
             ->success()
             ->title('Subscription clear saved')
             ->body(sprintf(
-                '%d subscription(s) were cleared with a total of %s MMK.',
-                $record?->subscriptions_count ?? 0,
+                '%d payment record(s) were cleared with a total of %s MMK.',
+                $record?->payments_count ?? 0,
                 number_format((float) ($record?->total ?? 0), 2),
             ));
     }

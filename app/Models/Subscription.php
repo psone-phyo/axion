@@ -60,6 +60,11 @@ class Subscription extends Model
         return $this->hasMany(SubscriptionProvision::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(SubscriptionPayment::class);
+    }
+
     public function usageLogs(): HasMany
     {
         return $this->hasMany(ServerUsageLog::class);

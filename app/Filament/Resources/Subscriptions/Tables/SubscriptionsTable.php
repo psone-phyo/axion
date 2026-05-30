@@ -36,10 +36,12 @@ class SubscriptionsTable
                     ->sortable(),
                 TextColumn::make('clear_status')
                     ->label('Clear')
-                    ->state(fn ($record): string => $record->clear_id ? 'Cleared' : 'Uncleared')
+                    ->state(fn ($record): string => $record->payments()->whereNull('clear_id')->exists() ? 'Uncleared' : 'Cleared')
                     ->badge()
-                    ->color(fn ($record): string => $record->clear_id ? 'success' : 'gray')
-                    ->url(fn ($record): ?string => $record->clear ? SubscriptionClearResource::getUrl('view', ['record' => $record->clear]) : null),
+                    ->color(fn ($record): string => $record->payments()->whereNull('clear_id')->exists() ? 'gray' : 'success')
+                    ->url(fn ($record): ?string => $record->payments()->whereNotNull('clear_id')->latest('id')->first()?->clear
+                        ? SubscriptionClearResource::getUrl('view', ['record' => $record->payments()->whereNotNull('clear_id')->latest('id')->first()->clear])
+                        : null),
                 TextColumn::make('creator.name')
                     ->label('Created By')
                     ->searchable()

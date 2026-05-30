@@ -5,7 +5,7 @@ namespace App\Filament\Resources\SubscriptionClears;
 use App\Filament\Resources\SubscriptionClears\Pages\CreateSubscriptionClear;
 use App\Filament\Resources\SubscriptionClears\Pages\ListSubscriptionClears;
 use App\Filament\Resources\SubscriptionClears\Pages\ViewSubscriptionClear;
-use App\Filament\Resources\SubscriptionClears\RelationManagers\SubscriptionsRelationManager;
+use App\Filament\Resources\SubscriptionClears\RelationManagers\SubscriptionPaymentsRelationManager;
 use App\Filament\Resources\SubscriptionClears\Schemas\SubscriptionClearForm;
 use App\Filament\Resources\SubscriptionClears\Schemas\SubscriptionClearInfolist;
 use App\Filament\Resources\SubscriptionClears\Tables\SubscriptionClearsTable;
@@ -47,7 +47,7 @@ class SubscriptionClearResource extends Resource
     public static function getRelations(): array
     {
         return [
-            SubscriptionsRelationManager::class,
+            SubscriptionPaymentsRelationManager::class,
         ];
     }
 

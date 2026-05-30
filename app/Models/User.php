@@ -65,4 +65,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(SubscriptionClear::class);
     }
+
+    public function subscriptionPayments(): HasMany
+    {
+        return $this->hasMany(SubscriptionPayment::class);
+    }
 }
