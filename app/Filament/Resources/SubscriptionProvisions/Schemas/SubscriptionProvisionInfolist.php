@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\SubscriptionProvisions\Schemas;
 
 use App\Enums\ProvisionStatus;
+use App\Filament\Resources\Customers\CustomerResource;
+use App\Filament\Resources\Subscriptions\SubscriptionResource;
 use App\Support\ByteFormatter;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -17,9 +19,11 @@ class SubscriptionProvisionInfolist
                 Section::make('Provision')
                     ->schema([
                         TextEntry::make('subscription.id')
-                            ->label('Subscription ID'),
+                            ->label('Subscription ID')
+                            ->url(fn ($record): string => SubscriptionResource::getUrl('view', ['record' => $record->subscription])),
                         TextEntry::make('subscription.customer.name')
-                            ->label('Customer'),
+                            ->label('Customer')
+                            ->url(fn ($record): string => CustomerResource::getUrl('view', ['record' => $record->subscription->customer])),
                         TextEntry::make('server.name')
                             ->label('Server'),
                         TextEntry::make('outline_access_key_id')

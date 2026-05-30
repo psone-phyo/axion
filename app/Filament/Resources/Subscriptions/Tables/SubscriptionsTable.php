@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Subscriptions\Tables;
 
 use App\Enums\SubscriptionStatus;
+use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -23,7 +24,8 @@ class SubscriptionsTable
                 TextColumn::make('customer.name')
                     ->label('Customer')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn ($record): string => CustomerResource::getUrl('view', ['record' => $record->customer])),
                 TextColumn::make('service.name')
                     ->label('Service')
                     ->searchable()
@@ -31,6 +33,10 @@ class SubscriptionsTable
                 TextColumn::make('service.platform.name')
                     ->label('Platform')
                     ->sortable(),
+                TextColumn::make('creator.name')
+                    ->label('Created By')
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('final_price')
                     ->label('Final Price')
                     ->money('MMK')

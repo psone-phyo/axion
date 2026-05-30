@@ -8,6 +8,7 @@ use App\Models\Server;
 use App\Models\Service;
 use App\Models\Subscription;
 use App\Models\SubscriptionProvision;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -51,26 +52,9 @@ class VpnProvisionService
     {
         if (filled($server->api_url)) {
             return $this->createOutlineAccessKey($server, $subscription);
+        }else{
+            throw new OutlineApiException('Only servers with API integration are supported for automatic provisioning. Please check the server configuration.');
         }
-
-        $token = Str::upper(Str::random(32));
-        $externalUserId = sprintf('vpn-%s-%s', $server->id, Str::lower(Str::random(12)));
-
-        return [
-            'outline_access_key_id' => $externalUserId,
-            'external_user_id' => $externalUserId,
-            'access_key' => sprintf(
-                'ss://%s@%s#%s',
-                $token,
-                $server->ip,
-                rawurlencode("SUB-{$subscription->id}-{$server->name}")
-            ),
-            'key_name' => "SUB-{$subscription->id}-{$server->name}",
-            'outline_method' => null,
-            'outline_port' => null,
-            'data_limit_bytes' => null,
-            'transferred_bytes' => 0,
-        ];
     }
 
     public function renameProvisionKey(SubscriptionProvision $provision, string $name): SubscriptionProvision

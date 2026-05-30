@@ -22,6 +22,8 @@ class CreateSubscription extends CreateRecord
     {
         /** @var Subscription $subscription */
         $subscription = DB::transaction(function () use ($data): Subscription {
+            $data['created_by'] = auth()->id();
+
             if ($data['create_customer'] ?? false) {
                 $customer = Customer::query()->create([
                     'name' => $data['customer_name'],

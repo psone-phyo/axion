@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Subscriptions\Schemas;
 
 use App\Enums\SubscriptionStatus;
+use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -18,11 +19,15 @@ class SubscriptionInfolist
                         TextEntry::make('id')
                             ->label('Subscription ID'),
                         TextEntry::make('customer.name')
-                            ->label('Customer'),
+                            ->label('Customer')
+                            ->url(fn ($record): string => CustomerResource::getUrl('view', ['record' => $record->customer])),
                         TextEntry::make('service.name')
                             ->label('Service'),
                         TextEntry::make('service.platform.name')
                             ->label('Platform'),
+                        TextEntry::make('creator.name')
+                            ->label('Created By')
+                            ->placeholder('-'),
                         TextEntry::make('original_price')
                             ->money('MMK'),
                         TextEntry::make('discount')

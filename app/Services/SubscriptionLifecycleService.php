@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\CarbonInterface;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class SubscriptionLifecycleService
 {
@@ -48,6 +49,14 @@ class SubscriptionLifecycleService
                         $provision->update([
                             'last_error' => $exception->getMessage(),
                             'last_synced_at' => now(),
+                        ]);
+
+                        Log::warning('Failed to revoke subscription provision during expiration.', [
+                            'subscription_id' => $subscription->id,
+                            'provision_id' => $provision->id,
+                            'server_id' => $provision->server_id,
+                            'message' => $exception->getMessage(),
+                            'exception' => $exception::class,
                         ]);
 
                         $failedProvisionCount++;

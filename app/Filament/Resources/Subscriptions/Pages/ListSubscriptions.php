@@ -40,10 +40,20 @@ class ListSubscriptions extends ListRecords
 
     public function getTabs(): array
     {
+        $tomorrow = now()->addDay()->toDateString();
+
         return [
             'active' => Tab::make('Active')
                 ->badge((string) Subscription::query()->where('status', SubscriptionStatus::Active->value)->count())
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status', SubscriptionStatus::Active->value)),
+            'expire_soon' => Tab::make('Expire Soon')
+                ->badge((string) Subscription::query()
+                    ->where('status', SubscriptionStatus::Active->value)
+                    ->whereDate('end_date', $tomorrow)
+                    ->count())
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query
+                    ->where('status', SubscriptionStatus::Active->value)
+                    ->whereDate('end_date', $tomorrow)),
             'expired' => Tab::make('Expired')
                 ->badge((string) Subscription::query()->where('status', SubscriptionStatus::Expired->value)->count())
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status', SubscriptionStatus::Expired->value)),

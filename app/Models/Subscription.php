@@ -12,6 +12,7 @@ class Subscription extends Model
     protected $fillable = [
         'customer_id',
         'service_id',
+        'created_by',
         'original_price',
         'discount',
         'final_price',
@@ -41,6 +42,11 @@ class Subscription extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function provisions(): HasMany

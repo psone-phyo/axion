@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\SubscriptionProvisions\Tables;
 
 use App\Enums\ProvisionStatus;
+use App\Filament\Resources\Customers\CustomerResource;
+use App\Filament\Resources\Subscriptions\SubscriptionResource;
 use App\Support\ByteFormatter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -20,10 +22,12 @@ class SubscriptionProvisionsTable
             ->columns([
                 TextColumn::make('subscription.id')
                     ->label('Subscription ID')
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn ($record): string => SubscriptionResource::getUrl('view', ['record' => $record->subscription])),
                 TextColumn::make('subscription.customer.name')
                     ->label('Customer')
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn ($record): string => CustomerResource::getUrl('view', ['record' => $record->subscription->customer])),
                 TextColumn::make('server.name')
                     ->label('Server')
                     ->searchable(),

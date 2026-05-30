@@ -21,6 +21,7 @@ class SubscriptionExporter extends Exporter
             ExportColumn::make('customer.name')->label('Customer'),
             ExportColumn::make('service.name')->label('Service'),
             ExportColumn::make('service.platform.name')->label('Platform'),
+            ExportColumn::make('creator.name')->label('Created By'),
             ExportColumn::make('original_price')->label('Service Price'),
             ExportColumn::make('discount')->label('Discount'),
             ExportColumn::make('final_price')->label('Final Price'),
