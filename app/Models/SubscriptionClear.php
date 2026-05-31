@@ -27,11 +27,6 @@ class SubscriptionClear extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function subscriptions(): HasMany
-    {
-        return $this->hasMany(Subscription::class, 'clear_id');
-    }
-
     public function payments(): HasMany
     {
         return $this->hasMany(SubscriptionPayment::class, 'clear_id');

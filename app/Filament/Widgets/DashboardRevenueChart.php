@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Subscription;
+use App\Models\SubscriptionPayment;
 use Carbon\Carbon;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
@@ -32,7 +32,7 @@ class DashboardRevenueChart extends ChartWidget
     public function getDescription(): ?string
     {
         $month = $this->getSelectedMonth();
-        $total = (float) Subscription::query()
+        $total = (float) SubscriptionPayment::query()
             ->whereBetween('created_at', [$month->copy()->startOfMonth(), $month->copy()->endOfMonth()])
             ->sum('final_price');
 
@@ -53,7 +53,7 @@ class DashboardRevenueChart extends ChartWidget
             $date = $month->copy()->day($day);
 
             $labels[] = $date->format('j');
-            $data[] = (float) Subscription::query()
+            $data[] = (float) SubscriptionPayment::query()
                 ->whereDate('created_at', $date)
                 ->sum('final_price');
         }

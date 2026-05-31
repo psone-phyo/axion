@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\SubscriptionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subscription extends Model
@@ -13,10 +14,6 @@ class Subscription extends Model
         'customer_id',
         'service_id',
         'created_by',
-        'clear_id',
-        'original_price',
-        'discount',
-        'final_price',
         'remark',
         'status',
         'start_date',
@@ -27,9 +24,6 @@ class Subscription extends Model
     {
         return [
             'status' => SubscriptionStatus::class,
-            'original_price' => 'decimal:2',
-            'discount' => 'decimal:2',
-            'final_price' => 'decimal:2',
             'start_date' => 'date',
             'end_date' => 'date',
         ];
@@ -50,11 +44,6 @@ class Subscription extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function clear(): BelongsTo
-    {
-        return $this->belongsTo(SubscriptionClear::class, 'clear_id');
-    }
-
     public function provisions(): HasMany
     {
         return $this->hasMany(SubscriptionProvision::class);
@@ -63,6 +52,21 @@ class Subscription extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(SubscriptionPayment::class);
+    }
+
+    public function latestPayment(): HasOne
+    {
+        return $this->hasOne(SubscriptionPayment::class)->latestOfMany();
+    }
+
+    public function hasUnclearedPayments(): bool
+    {
+        return $this->payments()->whereNull('clear_id')->exists();
+    }
+
+    public function latestClearedPayment(): ?SubscriptionPayment
+    {
+        return $this->payments()->whereNotNull('clear_id')->latest('id')->first();
     }
 
     public function usageLogs(): HasMany

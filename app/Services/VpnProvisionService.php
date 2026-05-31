@@ -32,10 +32,10 @@ class VpnProvisionService
                 'type' => 'create',
                 'start_date' => $subscription->start_date,
                 'end_date' => $subscription->end_date,
-                'original_price' => $subscription->original_price ?? 0,
-                'discount' => $subscription->discount ?? 0,
-                'final_price' => $subscription->final_price ?? 0,
-                'remark' => $subscription->remark,
+                'original_price' => $subscriptionData['original_price'] ?? 0,
+                'discount' => $subscriptionData['discount'] ?? 0,
+                'final_price' => $subscriptionData['final_price'] ?? 0,
+                'remark' => $subscriptionData['remark'] ?? null,
             ]);
 
             $server = $this->serverSelectionService->selectForService($service);

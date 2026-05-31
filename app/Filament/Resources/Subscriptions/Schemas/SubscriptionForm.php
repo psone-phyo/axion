@@ -100,6 +100,7 @@ class SubscriptionForm
                                         if ($selectedService?->platform_id !== (int) $state) {
                                             $set('service_id', null);
                                             $set('original_price', null);
+                                            $set('discount', 0);
                                             $set('final_price', null);
                                             $set('end_date', null);
                                         }
@@ -121,6 +122,7 @@ class SubscriptionForm
                                         if ($selectedService?->region?->value !== $state) {
                                             $set('service_id', null);
                                             $set('original_price', null);
+                                            $set('discount', 0);
                                             $set('final_price', null);
                                             $set('end_date', null);
                                         }
@@ -161,7 +163,8 @@ class SubscriptionForm
                                     ->numeric()
                                     ->prefix('MMK')
                                     ->readOnly()
-                                    ->required(),
+                                    ->required()
+                                    ->visible(fn (string $operation): bool => $operation === 'create'),
                                 TextInput::make('discount')
                                     ->numeric()
                                     ->default(0)
@@ -170,13 +173,15 @@ class SubscriptionForm
                                     ->afterStateUpdated(function (Set $set, Get $get): void {
                                         self::recalculateFinalPrice($set, $get);
                                     })
-                                    ->required(),
+                                    ->required()
+                                    ->visible(fn (string $operation): bool => $operation === 'create'),
                                 TextInput::make('final_price')
                                     ->label('Final Price')
                                     ->numeric()
                                     ->prefix('MMK')
                                     ->readOnly()
-                                    ->required(),
+                                    ->required()
+                                    ->visible(fn (string $operation): bool => $operation === 'create'),
                                 DatePicker::make('start_date')
                                     ->required()
                                     ->default(now()->toDateString())

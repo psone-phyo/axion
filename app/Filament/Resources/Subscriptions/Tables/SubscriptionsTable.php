@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Subscriptions\Tables;
 
 use App\Enums\SubscriptionStatus;
-use App\Filament\Resources\SubscriptionClears\SubscriptionClearResource;
 use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -27,29 +26,13 @@ class SubscriptionsTable
                     ->searchable()
                     ->sortable()
                     ->url(fn ($record): string => CustomerResource::getUrl('view', ['record' => $record->customer])),
-                TextColumn::make('service.name')
-                    ->label('Service')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('service.platform.name')
                     ->label('Platform')
                     ->sortable(),
-                TextColumn::make('clear_status')
-                    ->label('Clear')
-                    ->state(fn ($record): string => $record->payments()->whereNull('clear_id')->exists() ? 'Uncleared' : 'Cleared')
-                    ->badge()
-                    ->color(fn ($record): string => $record->payments()->whereNull('clear_id')->exists() ? 'gray' : 'success')
-                    ->url(fn ($record): ?string => $record->payments()->whereNotNull('clear_id')->latest('id')->first()?->clear
-                        ? SubscriptionClearResource::getUrl('view', ['record' => $record->payments()->whereNotNull('clear_id')->latest('id')->first()->clear])
-                        : null),
                 TextColumn::make('creator.name')
                     ->label('Created By')
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('final_price')
-                    ->label('Final Price')
-                    ->money('MMK')
-                    ->sortable(),
                 TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (SubscriptionStatus|string|null $state): ?string => $state instanceof SubscriptionStatus ? $state->label() : $state)

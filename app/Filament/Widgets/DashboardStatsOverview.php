@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Enums\SubscriptionStatus;
 use App\Models\Customer;
 use App\Models\Subscription;
+use App\Models\SubscriptionPayment;
 use Carbon\Carbon;
 use Filament\Support\Enums\IconPosition;
 use Filament\Widgets\StatsOverviewWidget;
@@ -30,11 +31,11 @@ class DashboardStatsOverview extends StatsOverviewWidget
 
         $activeSubscriptionCountSevenDaysAgo = $this->getActiveSubscriptionCountForDate($today->copy()->subDays(7));
 
-        $todayRevenue = (float) Subscription::query()
+        $todayRevenue = (float) SubscriptionPayment::query()
             ->whereDate('created_at', $today)
             ->sum('final_price');
 
-        $yesterdayRevenue = (float) Subscription::query()
+        $yesterdayRevenue = (float) SubscriptionPayment::query()
             ->whereDate('created_at', $today->copy()->subDay())
             ->sum('final_price');
 
@@ -131,7 +132,7 @@ class DashboardStatsOverview extends StatsOverviewWidget
     protected function getDailyRevenueChart(): array
     {
         return $this->getLastSevenDays()
-            ->map(fn (Carbon $day): float => (float) Subscription::query()->whereDate('created_at', $day)->sum('final_price'))
+            ->map(fn (Carbon $day): float => (float) SubscriptionPayment::query()->whereDate('created_at', $day)->sum('final_price'))
             ->all();
     }
 

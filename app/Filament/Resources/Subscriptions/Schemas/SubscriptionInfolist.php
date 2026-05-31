@@ -31,18 +31,18 @@ class SubscriptionInfolist
                             ->placeholder('-'),
                         TextEntry::make('clear_status')
                             ->label('Clear')
-                            ->state(fn ($record): string => $record->payments()->whereNull('clear_id')->exists() ? 'Uncleared' : 'Cleared')
+                            ->state(fn ($record): string => $record->hasUnclearedPayments() ? 'Uncleared' : 'Cleared')
                             ->badge()
-                            ->color(fn ($record): string => $record->payments()->whereNull('clear_id')->exists() ? 'gray' : 'success')
-                            ->url(fn ($record): ?string => $record->payments()->whereNotNull('clear_id')->latest('id')->first()?->clear
-                                ? SubscriptionClearResource::getUrl('view', ['record' => $record->payments()->whereNotNull('clear_id')->latest('id')->first()->clear])
+                            ->color(fn ($record): string => $record->hasUnclearedPayments() ? 'gray' : 'success')
+                            ->url(fn ($record): ?string => $record->latestClearedPayment()?->clear
+                                ? SubscriptionClearResource::getUrl('view', ['record' => $record->latestClearedPayment()->clear])
                                 : null),
-                        TextEntry::make('original_price')
+                        TextEntry::make('latestPayment.original_price')
                             ->money('MMK'),
-                        TextEntry::make('discount')
+                        TextEntry::make('latestPayment.discount')
                             ->money('MMK'),
-                        TextEntry::make('final_price')
-                            ->label('Final Price')
+                        TextEntry::make('latestPayment.final_price')
+                            ->label('Latest Amount')
                             ->money('MMK'),
                         TextEntry::make('status')
                             ->badge()
