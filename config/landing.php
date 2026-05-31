@@ -35,7 +35,7 @@ return [
     'network_title' => env('LANDING_NETWORK_TITLE', 'AXION'),
     'network_description' => env(
         'LANDING_NETWORK_DESCRIPTION',
-        'A clean subscription landing page for selling VPN access across the most common client apps your customers already use.'
+        'Get reliable VPN access for Outline, V2Box, and Hiddify with simple pricing, fast setup, and direct support when you need help.'
     ),
     'network_footer' => env('LANDING_NETWORK_FOOTER', 'Outline-focused VPN subscription service'),
     'services_heading' => env('LANDING_SERVICES_HEADING', 'Choose the VPN platform that fits your device and usage style.'),

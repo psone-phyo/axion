@@ -164,7 +164,7 @@ class VpnProvisionService
         return [
             'outline_access_key_id' => (string) $accessKey['id'],
             'external_user_id' => (string) $accessKey['id'],
-            'access_key' => $accessKey['accessUrl'],
+            'access_key' => $accessKey['accessUrl'].'#AxionService-'.$subscription->id,
             'key_name' => $accessKey['name'] ?? $name,
             'outline_method' => $accessKey['method'] ?? null,
             'outline_port' => $accessKey['port'] ?? null,

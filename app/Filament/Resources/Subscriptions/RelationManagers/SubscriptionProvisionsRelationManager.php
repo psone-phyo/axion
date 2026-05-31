@@ -38,7 +38,6 @@ class SubscriptionProvisionsRelationManager extends RelationManager
                         default => 'gray',
                     }),
                 TextColumn::make('access_key')
-                    ->limit(40)
                     ->copyable(),
                 TextColumn::make('transferred_bytes')
                     ->label('Transferred')
