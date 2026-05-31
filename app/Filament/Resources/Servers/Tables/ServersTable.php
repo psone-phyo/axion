@@ -17,9 +17,10 @@ class ServersTable
     {
         return $table
             ->columns([
-                TextColumn::make('platform.name')
-                    ->label('Platform')
-                    ->sortable(),
+                TextColumn::make('platforms.name')
+                    ->label('Platforms')
+                    ->badge()
+                    ->listWithLineBreaks(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -50,7 +51,7 @@ class ServersTable
             ])
             ->filters([
                 SelectFilter::make('platform')
-                    ->relationship('platform', 'name'),
+                    ->relationship('platforms', 'name'),
                 SelectFilter::make('region')
                     ->options(Region::options()),
                 SelectFilter::make('is_active')

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Subscriptions\Schemas;
 use App\Enums\Region;
 use App\Enums\SubscriptionStatus;
 use App\Enums\CustomerPlatform;
+use App\Models\Customer;
 use App\Models\Platform;
 use App\Models\Service;
 use App\Models\Subscription;
@@ -43,6 +44,13 @@ class SubscriptionForm
                                     ->required(fn (Get $get, string $operation): bool => ! ($operation === 'create' && $get('create_customer')))
                                     ->searchable()
                                     ->preload()
+                                    ->getOptionLabelFromRecordUsing(function (Customer $record): string {
+                                        $platform = $record->platform instanceof CustomerPlatform
+                                            ? $record->platform->label()
+                                            : (string) $record->platform;
+
+                                        return sprintf('%s (%s)', $record->name, $platform);
+                                    })
                                     ->dehydrated(fn (Get $get, string $operation): bool => ! ($operation === 'create' && $get('create_customer')))
                                     ->visible(fn (Get $get, string $operation): bool => ! ($operation === 'create' && $get('create_customer'))),
                                 Fieldset::make('New Customer')

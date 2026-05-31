@@ -14,7 +14,7 @@ class ServerSelectionService
     public function selectForService(Service $service): Server
     {
         $server = Server::query()
-            ->where('platform_id', $service->platform_id)
+            ->whereHas('platforms', fn ($query) => $query->whereKey($service->platform_id))
             ->where('region', $service->region)
             ->where('is_active', true)
             ->withCount([
@@ -29,7 +29,7 @@ class ServerSelectionService
             ->first();
 
         if (! $server) {
-            throw new NoAvailableServerException('No available server matched the selected platform and region.');
+            throw new NoAvailableServerException('No available server matched the selected platform relationship and region.');
         }
 
         return $server;

@@ -4,13 +4,12 @@ namespace App\Models;
 
 use App\Enums\Region;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Server extends Model
 {
     protected $fillable = [
-        'platform_id',
         'name',
         'ip',
         'api_url',
@@ -29,9 +28,9 @@ class Server extends Model
         ];
     }
 
-    public function platform(): BelongsTo
+    public function platforms(): BelongsToMany
     {
-        return $this->belongsTo(Platform::class);
+        return $this->belongsToMany(Platform::class)->withTimestamps();
     }
 
     public function provisions(): HasMany

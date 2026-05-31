@@ -16,8 +16,10 @@ class ServerInfolist
             ->components([
                 Section::make('Server')
                     ->schema([
-                        TextEntry::make('platform.name')
-                            ->label('Platform'),
+                        TextEntry::make('platforms.name')
+                            ->label('Platforms')
+                            ->badge()
+                            ->listWithLineBreaks(),
                         TextEntry::make('name'),
                         TextEntry::make('ip')
                             ->label('IP Address'),

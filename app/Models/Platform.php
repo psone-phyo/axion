@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Platform extends Model
@@ -12,9 +13,9 @@ class Platform extends Model
         'description',
     ];
 
-    public function servers(): HasMany
+    public function servers(): BelongsToMany
     {
-        return $this->hasMany(Server::class);
+        return $this->belongsToMany(Server::class)->withTimestamps();
     }
 
     public function services(): HasMany

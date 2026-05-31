@@ -20,8 +20,9 @@ class ServerForm
                     ->schema([
                         Grid::make(2)
                             ->schema([
-                                Select::make('platform_id')
-                                    ->relationship('platform', 'name')
+                                Select::make('platforms')
+                                    ->relationship('platforms', 'name')
+                                    ->multiple()
                                     ->required()
                                     ->searchable()
                                     ->preload(),
