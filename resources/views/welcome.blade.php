@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta
             name="description"
-            content="Axion provides fast and simple VPN subscriptions for Outline, V2Box, and Hiddify users."
+            content="{{ config('landing.meta_description') }}"
         >
 
-        <title>Axion | VPN Subscription Service</title>
+        <title>{{ config('landing.brand_name') }} | {{ config('landing.brand_tagline') }}</title>
         <link rel="icon" type="image/jpeg" href="{{ asset('logo/axion_main_logo.jpg') }}">
         <link rel="apple-touch-icon" href="{{ asset('logo/axion_main_logo.jpg') }}">
 
@@ -51,49 +51,44 @@
 
             $plans = [
                 [
-                    'name' => 'Outline Starter',
+                    'name' => '1 Month Access',
                     'duration' => '1 Month',
                     'price' => '5,000',
-                    'description' => 'A simple monthly plan for users who want reliable access with a low entry price.',
+                    'description' => 'A simple monthly plan for customers who want quick setup and low-cost access across all supported platforms.',
                     'features' => [
-                        'Best for individual everyday use',
-                        'Quick delivery after confirmation',
-                        'Easy renewal cycle',
+                        'Same price for Outline, V2Box, and Hiddify',
+                        'Good choice for first-time buyers',
+                        'Fast renewal and easy monthly cycle',
                     ],
                     'featured' => false,
                 ],
                 [
-                    'name' => 'V2Box Plus',
-                    'duration' => '1 Month',
-                    'price' => '8,000',
-                    'description' => 'A more flexible plan for users who want stronger protocol support and smoother routing.',
+                    'name' => '3 Month Access',
+                    'duration' => '3 Months',
+                    'price' => '13,500',
+                    'description' => 'A better-value plan for customers who want longer usage time without renewing every month.',
                     'features' => [
-                        'Stable performance for regular heavy use',
-                        'Great choice for multi-device customers',
-                        'Priority-ready plan structure',
+                        'Best balance of price and duration',
+                        'Popular for regular everyday users',
+                        'Works across all supported platforms',
                     ],
                     'featured' => true,
                 ],
                 [
-                    'name' => 'Hiddify Access',
-                    'duration' => '1 Month',
-                    'price' => '7,000',
-                    'description' => 'A clean monthly subscription focused on comfort, compatibility, and modern client support.',
+                    'name' => '6 Month Access',
+                    'duration' => '6 Months',
+                    'price' => '25,000',
+                    'description' => 'A longer plan for customers who want the lowest hassle and more stable long-term use.',
                     'features' => [
-                        'Comfortable setup for mobile and desktop',
-                        'Reliable option for personal privacy use',
-                        'Smooth subscription management',
+                        'Lower renewal frequency for long-term customers',
+                        'Great for heavy or continuous use',
+                        'Same pricing across all supported platforms',
                     ],
                     'featured' => false,
                 ],
             ];
 
-            $contacts = [
-                ['platform' => 'Telegram', 'handle' => '@axionvpn', 'href' => '#'],
-                ['platform' => 'Facebook', 'handle' => 'Axion VPN', 'href' => '#'],
-                ['platform' => 'Messenger', 'handle' => 'm.me/axionvpn', 'href' => '#'],
-                ['platform' => 'TikTok', 'handle' => '@axionvpn', 'href' => '#'],
-            ];
+            $contacts = config('landing.contacts');
         @endphp
 
         <div class="axion-shell relative min-h-screen overflow-hidden">
@@ -108,8 +103,8 @@
                             <span class="font-brand text-2xl uppercase tracking-[0.18em] text-axion-cyan">A</span>
                         </span>
                         <span>
-                            <span class="axion-title block text-2xl sm:text-3xl">Axion</span>
-                            <span class="block text-xs uppercase tracking-[0.32em] text-slate-400">VPN Subscription Service</span>
+                            <span class="axion-title block text-2xl sm:text-3xl">{{ config('landing.brand_name') }}</span>
+                            <span class="block text-xs uppercase tracking-[0.32em] text-slate-400">{{ config('landing.brand_tagline') }}</span>
                         </span>
                     </a>
 
@@ -123,43 +118,41 @@
                 <main id="top" class="flex-1">
                     <section class="grid gap-14 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-24">
                         <div>
-                            <span class="axion-pill">Secure. Simple. Subscription Ready.</span>
+                            <span class="axion-pill">{{ config('landing.hero_badge') }}</span>
                             <h1 class="mt-8 max-w-4xl text-5xl font-semibold leading-tight text-white sm:text-6xl lg:text-7xl">
-                                VPN subscriptions for
-                                <span class="text-transparent bg-linear-to-r from-axion-cyan via-axion-mist to-axion-sky bg-clip-text">Outline, V2Box, and Hiddify</span>
+                                {{ config('landing.hero_title') }}
                             </h1>
                             <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                                Axion is a simple landing page for customers who want fast VPN subscription access, clear pricing,
-                                and direct contact channels for support and ordering.
+                                {{ config('landing.hero_description') }}
                             </p>
 
                             <div class="mt-10 flex flex-col gap-4 sm:flex-row">
                                 <a
-                                    href="#pricing"
+                                    href="{{ config('landing.hero_primary_href') }}"
                                     class="inline-flex items-center justify-center rounded-full bg-axion-cyan px-7 py-3.5 text-sm font-semibold text-axion-night transition hover:bg-axion-mist"
                                 >
-                                    View Plans
+                                    {{ config('landing.hero_primary_label') }}
                                 </a>
                                 <a
-                                    href="#contact"
+                                    href="{{ config('landing.hero_secondary_href') }}"
                                     class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/6 px-7 py-3.5 text-sm font-semibold text-white transition hover:border-axion-cyan/40 hover:bg-white/10"
                                 >
-                                    Contact Us
+                                    {{ config('landing.hero_secondary_label') }}
                                 </a>
                             </div>
 
                             <div class="mt-12 grid gap-4 sm:grid-cols-3">
                                 <div class="axion-card p-5">
-                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Delivery</p>
-                                    <p class="mt-3 text-2xl font-semibold text-white">Fast Setup</p>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">{{ config('landing.stats.0.label') }}</p>
+                                    <p class="mt-3 text-2xl font-semibold text-white">{{ config('landing.stats.0.value') }}</p>
                                 </div>
                                 <div class="axion-card p-5">
-                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Platforms</p>
-                                    <p class="mt-3 text-2xl font-semibold text-white">3 Services</p>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">{{ config('landing.stats.1.label') }}</p>
+                                    <p class="mt-3 text-2xl font-semibold text-white">{{ config('landing.stats.1.value') }}</p>
                                 </div>
                                 <div class="axion-card p-5">
-                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Support</p>
-                                    <p class="mt-3 text-2xl font-semibold text-white">Social Contact</p>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">{{ config('landing.stats.2.label') }}</p>
+                                    <p class="mt-3 text-2xl font-semibold text-white">{{ config('landing.stats.2.value') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -171,10 +164,10 @@
                                 <div class="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-axion-sky/18 blur-3xl"></div>
 
                                 <div class="relative">
-                                    <p class="text-sm uppercase tracking-[0.34em] text-axion-cyan/80">Axion Network</p>
-                                    <h2 class="axion-title mt-6 text-5xl sm:text-6xl">AXION</h2>
+                                    <p class="text-sm uppercase tracking-[0.34em] text-axion-cyan/80">{{ config('landing.network_eyebrow') }}</p>
+                                    <h2 class="axion-title mt-6 text-5xl sm:text-6xl">{{ config('landing.network_title') }}</h2>
                                     <p class="mt-4 max-w-md text-sm leading-7 text-slate-300">
-                                        A dark, modern subscription page inspired by the logo colors with a cleaner presentation for selling VPN access.
+                                        {{ config('landing.network_description') }}
                                     </p>
 
                                     <div class="mt-10 space-y-4">
@@ -199,7 +192,7 @@
                                     </div>
 
                                     <div class="mt-10 h-px bg-linear-to-r from-transparent via-axion-cyan/50 to-transparent"></div>
-                                    <p class="mt-8 text-xs uppercase tracking-[0.36em] text-slate-400">Subscription landing page v1</p>
+                                    <p class="mt-8 text-xs uppercase tracking-[0.36em] text-slate-400">{{ config('landing.network_footer') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -208,9 +201,9 @@
                     <section id="services" class="py-12 sm:py-16">
                         <div class="max-w-3xl">
                             <span class="axion-pill">Our Services</span>
-                            <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">Choose the VPN platform that fits your style.</h2>
+                            <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">{{ config('landing.services_heading') }}</h2>
                             <p class="mt-5 text-lg leading-8 text-slate-300">
-                                Each service is presented clearly so customers can quickly understand what they are buying before they message you.
+                                {{ config('landing.services_description') }}
                             </p>
                         </div>
 
@@ -230,10 +223,10 @@
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                             <div class="max-w-3xl">
                                 <span class="axion-pill">Pricing</span>
-                                <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">Simple monthly pricing for your subscription offers.</h2>
+                                <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">{{ config('landing.pricing_heading') }}</h2>
                             </div>
                             <p class="max-w-xl text-base leading-7 text-slate-300">
-                                You can edit these prices later. I set them up as clean cards so your customers can compare quickly at a glance.
+                                {{ config('landing.pricing_description') }}
                             </p>
                         </div>
 
@@ -255,9 +248,9 @@
                         <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
                             <div>
                                 <span class="axion-pill">Contact</span>
-                                <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">Let customers reach you from the channels they already use.</h2>
+                                <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">{{ config('landing.contact_heading') }}</h2>
                                 <p class="mt-5 text-lg leading-8 text-slate-300">
-                                    These links are placeholders for now. You can replace each URL later with your real Telegram, Facebook, Messenger, and TikTok pages.
+                                    {{ config('landing.contact_description') }}
                                 </p>
                             </div>
 
@@ -276,7 +269,7 @@
 
                 <footer class="mt-8 border-t border-white/10 py-8 text-sm text-slate-400">
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <p>&copy; {{ now()->year }} Axion. Static subscription landing page for VPN services.</p>
+                        <p>&copy; {{ now()->year }} {{ config('landing.brand_name') }}. {{ config('landing.footer_text') }}</p>
                         <div class="flex flex-wrap gap-5">
                             <a href="#services" class="transition hover:text-white">Services</a>
                             <a href="#pricing" class="transition hover:text-white">Pricing</a>
